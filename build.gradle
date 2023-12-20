@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 repositories {
@@ -11,14 +12,26 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter"
     testImplementation "org.assertj:assertj-core:3.24.2"
 }
+jacoco {
+    toolVersion = "0.8.9"
+    reportsDirectory = layout.buildDirectory.dir('jacoco/reports')
+}
 
 group = 'org.douggschwind'
 version = '1.0-SNAPSHOT'
 description = 'Games'
 java.sourceCompatibility = JavaVersion.VERSION_17
 
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+    dependsOn test
+}
+
 tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+    options.encoding = "UTF-8"
 }
 
 tasks.withType(Test) {
@@ -32,4 +45,3 @@ allprojects {
         }
     }
 }
-
